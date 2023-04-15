@@ -12,7 +12,8 @@ export default async function(req,res){
     const { prompt } = req.body;
     const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
-        messages: [{role:"system",content:"You are a therapist playing the role of my mental health aid."},{ role: "user", content: prompt }]
+        messages: [{role:"system",content:"You are a therapist playing the role of my mental health aid."},{ role: "user", content: prompt}]
     })
-    res.status(200).json({completion: completion.data.choices[0].messages});
+
+    res.status(200).json({completion: completion.data.choices[0].message.content});
 }

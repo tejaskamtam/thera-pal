@@ -1,22 +1,29 @@
+import { default as NavBar, default as ResponsiveAppBar } from '@/components/NavBar.js';
+import { app } from '@/firebase.js';
 import styles from '@/styles/Home.module.css';
+import { getAuth } from 'firebase/auth';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
-import { OpenAI } from './api/openai.js';
-import { getAuth } from 'firebase/auth';
-import { app } from '@/firebase.js';
-import NavBar from '@/components/NavBar.js';
-import ResponsiveAppBar from '@/components/NavBar.js';
-
-// testing openai prompting
-// format: message=[{role:"",content:""},{},...]
-// roles: system (what the AI is acting as), user (what the user wants to know), assistant (assistance on statements)
-const message = [
-  { role: "system", content: "You are a professional therapist focused on mental health." },
-  { role: "user", content: "I feel stressed due to homework and projects at school. Is this fine? What should I do to cope and destress?" }
-]
 
 export default function Home() {
+  // chat with AI
+  async function onSubmit(event) {
+    event.preventDefault();
+    const response = await fetch('api/openai',{
+      method: "POST",
+      headers: {
+        "Content-Type":"applications/json",
+      },
+      body: JSON.stringify({prompt: event.target.prompt.value}),
+    })
+    // of type {"completion": "..."}
+    const data = await response.json();
+    // TODO: display data.completion
+    console.log(data);
+  }
+
+  // auth  control
   const auth = getAuth(app);
   console.log(auth);
   return (
@@ -35,6 +42,7 @@ export default function Home() {
         ) : (
           <div>Please Sign up!</div>
         )}
+
       </main>
     </>
   );

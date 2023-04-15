@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { OpenAI } from './api/openai.js';
 import { getAuth } from 'firebase/auth';
 import { app } from '@/firebase.js';
+import NavBar from '@/components/NavBar.js';
+import ResponsiveAppBar from '@/components/NavBar.js';
 
 export default function Home() {
   const auth = getAuth(app);
@@ -18,6 +20,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <ResponsiveAppBar />
+
         {auth.currentUser ? (
           <div>You're Signed In!</div>
         ) : (

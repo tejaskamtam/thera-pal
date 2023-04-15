@@ -4,4 +4,16 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
-const response = await openai.listEngines();
+
+// function to generate text from a prompt
+export default async function handler(req, res) {
+    try {
+        const response = await openai.complete({
+            
+        });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err });
+    }
+}

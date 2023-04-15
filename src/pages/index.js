@@ -7,6 +7,13 @@ import { getAuth } from 'firebase/auth';
 import { app } from '@/firebase.js';
 import NavBar from '@/components/NavBar.js';
 import ResponsiveAppBar from '@/components/NavBar.js';
+// testing openai prompting
+// format: message=[{role:"",content:""},{},...]
+// roles: system (what the AI is acting as), user (what the user wants to know), assistant (assistance on statements)
+const message = [
+  { role: "system", content: "You are a professional therapist focused on mental health." },
+  { role: "user", content: "I feel stressed due to homework and projects at school. Is this fine? What should I do to cope and destress?" }
+]
 
 export default function Home() {
   const auth = getAuth(app);

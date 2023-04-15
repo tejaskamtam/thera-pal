@@ -7,6 +7,7 @@ import { getAuth } from 'firebase/auth';
 import { app } from '@/firebase.js';
 import NavBar from '@/components/NavBar.js';
 import ResponsiveAppBar from '@/components/NavBar.js';
+
 // testing openai prompting
 // format: message=[{role:"",content:""},{},...]
 // roles: system (what the AI is acting as), user (what the user wants to know), assistant (assistance on statements)

@@ -6,8 +6,9 @@ import { getAnalytics } from 'firebase/analytics';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 const firebaseConfig = {
-  apiKey: process.env.AIzaSyAbKiCxc3lxohgvR_waS9dKq-l6A3wfyJE,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'thera-pal.firebaseapp.com',
   projectId: 'thera-pal',
   storageBucket: 'thera-pal.appspot.com',
@@ -18,6 +19,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
-export default app;
+export { app };

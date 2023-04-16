@@ -42,9 +42,9 @@ export default function Home() {
     const user_prompt = document.getElementById('user-input').value;
     console.log(user_prompt);
 
-    setPrompts(...prompts, { role: 'user', content: user_prompt });
+    // setPrompts(...prompts, { role: 'user', content: user_prompt });
 
-    setDoc(doc(db, 'users', fire_auth.user.uid), prompts);
+    // setDoc(doc(db, 'users', fire_auth.user.uid), prompts);
 
     const response = await fetch('./api/openai', {
       method: 'POST',
@@ -56,7 +56,7 @@ export default function Home() {
     // of return type - {response: {role:"", content:""}}
     const res = await response.json();
     history.push(res.response);
-    console.log(history);
+    console.log(...history);
     console.log(res);
   }
 

@@ -1,4 +1,7 @@
+import { default as NavBar, default as ResponsiveAppBar } from '@/components/NavBar.js';
+import { app } from '@/firebase.js';
 import styles from '@/styles/Home.module.css';
+import { getAuth } from 'firebase/auth';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -11,6 +14,23 @@ import { Box } from '@mui/material';
 import { useRouter } from 'next/router.js';
 
 export default function Home() {
+  // chat with AI
+  async function onSubmit(event) {
+    event.preventDefault();
+    const response = await fetch('api/openai',{
+      method: "POST",
+      headers: {
+        "Content-Type":"applications/json",
+      },
+      body: JSON.stringify({prompt: event.target.prompt.value}),
+    })
+    // of type {"completion": "..."}
+    const data = await response.json();
+    // TODO: display data.completion
+    console.log(data);
+  }
+
+  // auth  control
   const auth = getAuth(app);
   console.log(auth);
   const router = useRouter();
@@ -42,6 +62,7 @@ export default function Home() {
             <div>Please Sign up!</div>
           )}
         </Box>
+
       </main>
     </>
   );

@@ -11,6 +11,7 @@ import { OpenAI } from './api/openai.js';
 import { getFirestore, getDoc, doc, setDoc } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import Link from 'next/link.js';
+import LoginIcon from '@mui/icons-material/Login';
 
 const db = getFirestore();
 const fire_auth = getAuth(app);
@@ -134,7 +135,7 @@ export default function Home() {
                 flexGrow: 1,
               }}
             >
-              <Button variant = "contained" color = "success">
+              <Button variant = "contained" color = "success" startIcon={<LoginIcon />}>
                 <Link href="/login">Login with Google</Link>
               </Button>
             </Box>

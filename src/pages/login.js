@@ -46,14 +46,14 @@ const Login = () => {
         name: userCred.user.displayName,
         email: userCred.user.email,
         photo: userCred.user.photoURL,
+        prompts: [],
       };
-      setDoc(doc(db, 'users', userCred.user.uid), userData, {
-        merge: true,
-      }).then(() => {
+      setDoc(doc(db, 'users', userCred.user.uid), userData, {merge: true}).then(() => {
         router.push('/');
       });
     });
   };
+
 
   const router = useRouter();
 
@@ -68,9 +68,7 @@ const Login = () => {
       <main>
         <ResponsiveAppBar />
         <Box sx={styles.container}>
-          <Button sx={{ background: 'white' }} onClick={handleSignIn}>
-            Login With Google
-          </Button>
+          <Button sx={{background: 'white'}} onClick={handleSignIn}>Login With Google</Button>
         </Box>
       </main>
     </>

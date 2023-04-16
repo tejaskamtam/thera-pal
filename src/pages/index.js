@@ -26,13 +26,15 @@ export default function Home() {
     }
   });
 
-  const [prompts, setPrompts] = useState();
+  const [prompts, setPrompts] = useState([]);
   useEffect(() => {
     if (auth && fire_auth.currentUser) {
       const user_uid = fire_auth.currentUser.uid;
       console.log(fire_auth);
       getDoc(doc(db, 'users', user_uid)).then((data) => {
-        setPrompts(data.data().prompts);
+        if (!data.data().prompts) {
+          setPrompts(data.data().prompts);
+        }
       });
     }
   }, [auth]);
@@ -59,7 +61,9 @@ export default function Home() {
     const res = await response.json();
     history.push(res.response);
 
-    setPrompts([...history]);
+    if (history) {
+      setPrompts([...history]);
+    }
     setDoc(doc(db, 'users', auth.uid), { prompts: history }, { merge: true });
 
     console.log(prompts);
@@ -94,8 +98,8 @@ export default function Home() {
       width: '50vw',
       backgroundImage: `url(${'chat.png'})`,
       backgroundSIze: 'cover',
-      backgroundRepeat: 'no-repeat'
-    }
+      backgroundRepeat: 'no-repeat',
+    },
   };
 
   return (
@@ -130,7 +134,7 @@ export default function Home() {
                 {prompts?.map((prompt) => {
                   if (prompt.role == 'user')
                     return (
-                      <div styles={{display: 'flex', flex: "end"}}>
+                      <div styles={{ display: 'flex', flex: 'end' }}>
                         <Card
                           sx={{
                             textAlign: 'right',
@@ -180,13 +184,18 @@ export default function Home() {
               }}
             >
               <Box sx={styles.chat}>
-              <Button variant = "contained" color = "success" startIcon={<LoginIcon />} sx = {{mt : 28, ml: 19, padding : 3}}>
-                <Link href="/login">Login with Google</Link>
-              </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<LoginIcon />}
+                  sx={{ mt: 28, ml: 19, padding: 3 }}
+                >
+                  <Link href="/login">Login with Google</Link>
+                </Button>
               </Box>
             </Box>
           )}
-          
+
           <Box sx={styles.logo}></Box>
           {/* <img src="/Users/kelly/Desktop/hackathon/thera-pal/public/logo.png"></img> */}
         </Box>

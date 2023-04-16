@@ -41,16 +41,11 @@ export default function Home() {
   async function onSubmit() {
     const user_prompt = document.getElementById('user-input').value;
     console.log(user_prompt);
-<<<<<<< Updated upstream
 
     setPrompts(...prompts, { role: 'user', content: user_prompt });
 
     setDoc(doc(db, 'users', fire_auth.user.uid), prompts);
 
-=======
-    // TODO: incorporate with state
-    
->>>>>>> Stashed changes
     const response = await fetch('./api/openai', {
       method: 'POST',
       headers: {

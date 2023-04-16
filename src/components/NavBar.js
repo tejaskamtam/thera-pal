@@ -39,7 +39,7 @@ function ResponsiveAppBar() {
         });
       }
     }, [auth]);
-    console.log(userData);
+    console.log(userData?.photo);
 
       const handleSignOut = async () => {
         signOut(fire_auth)

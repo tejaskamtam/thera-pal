@@ -1,13 +1,13 @@
+import ResponsiveAppBar from '@/components/NavBar.js';
+import { app } from '@/firebase.js';
 import styles from '@/styles/Home.module.css';
+import { Box, Button, TextField } from '@mui/material';
+import { getAuth } from 'firebase/auth';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
-import { OpenAI } from './api/openai.js';
-import { getAuth } from 'firebase/auth';
-import { app } from '@/firebase.js';
-import ResponsiveAppBar from '@/components/NavBar.js';
-import { Box, Button, TextField } from '@mui/material';
 import { useRouter } from 'next/router.js';
+import { OpenAI } from './api/openai.js';
 
 export default function Home() {
   // chat with AI
@@ -19,11 +19,10 @@ export default function Home() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: user_prompt.toString()}),
+      body: JSON.stringify({ prompt: user_prompt.toString() }),
     });
-    // of type {"completion": "..."}
+    // of type {response: "..."}
     const data = await response.json();
-    // TODO: display data.completion
     console.log(data);
   }
 

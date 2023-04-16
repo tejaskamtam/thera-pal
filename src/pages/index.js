@@ -1,17 +1,13 @@
+import ResponsiveAppBar from '@/components/NavBar.js';
+import { app } from '@/firebase.js';
 import styles from '@/styles/Home.module.css';
+import { Box, Button, TextField } from '@mui/material';
+import { getAuth } from 'firebase/auth';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
-import { OpenAI } from './api/openai.js';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app } from '@/firebase.js';
-import ResponsiveAppBar from '@/components/NavBar.js';
-import { Box, Button, Card, Link, TextField } from '@mui/material';
 import { useRouter } from 'next/router.js';
-import { useEffect, useState } from 'react';
-import { getFirestore, getDoc, doc, setDoc } from '@firebase/firestore';
-import { SetMeal } from '@mui/icons-material';
-
+import { OpenAI } from './api/openai.js';
 
 export default function Home() {
   const fire_auth = getAuth(app);
@@ -52,9 +48,8 @@ export default function Home() {
       },
       body: JSON.stringify({ prompt: user_prompt.toString() }),
     });
-    // of type {"completion": "..."}
+    // of type {response: "..."}
     const data = await response.json();
-    // TODO: display data.completion
     console.log(data);
   }
 

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 * {
   box-sizing: border-box;
   padding: 0;
@@ -10,7 +11,7 @@ body {
   overflow-x: hidden;
   font-size: 16px;
   line-height: 1.625;
-  font-family: Nunito, sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 a {
@@ -30,5 +31,3 @@ main {
   text-align: center;
   min-height: 100vh;
 }
-
-

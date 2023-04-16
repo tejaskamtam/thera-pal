@@ -1,17 +1,21 @@
 import ResponsiveAppBar from '@/components/NavBar.js';
 import { app } from '@/firebase.js';
 import styles from '@/styles/Home.module.css';
-import { Box, Button, TextField } from '@mui/material';
-import { getAuth } from 'firebase/auth';
+import { Box, Button, Card, TextField } from '@mui/material';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router.js';
 import { OpenAI } from './api/openai.js';
+import { getFirestore, getDoc, doc, setDoc } from '@firebase/firestore';
+import { useEffect, useState } from 'react';
+import Link from 'next/link.js';
+
+  const db = getFirestore();
 
 export default function Home() {
   const fire_auth = getAuth(app);
-  const db = getFirestore(app);
 
   const [auth, setAuth] = useState(null);
 
@@ -30,7 +34,7 @@ export default function Home() {
     }
   }, [auth]);
 
-  console.log(prompts)
+  console.log(prompts);
 
   // chat with AI
   async function onSubmit() {
@@ -91,17 +95,19 @@ export default function Home() {
                 padding: 1,
               }}
             >
-              <Box>text</Box>
-              <Box>text</Box>
-              <Box>text</Box>
+              <Card>text</Card>
+              <Card>text</Card>
+              <Card>text</Card>
               <Box sx={{ width: '100%' }}>
                 <TextField
                   id="user-input"
                   label="Say Something UwU"
                   variant="outlined"
-                  sx={{margin: 1}}
+                  sx={{ margin: 1 }}
                 />
-                <Button sx={{height: '100%'}} onClick={onSubmit}>Submit</Button>
+                <Button sx={{ height: '100%' }} onClick={onSubmit}>
+                  Submit
+                </Button>
               </Box>
             </Card>
           ) : (

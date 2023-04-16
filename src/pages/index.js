@@ -37,24 +37,32 @@ export default function Home() {
   console.log(prompts);
 
   // chat with AI
+  let history =[];
   async function onSubmit() {
     const user_prompt = document.getElementById('user-input').value;
     console.log(user_prompt);
+<<<<<<< Updated upstream
 
     setPrompts(...prompts, { role: 'user', content: user_prompt });
 
     setDoc(doc(db, 'users', fire_auth.user.uid), prompts);
 
+=======
+    // TODO: incorporate with state
+    
+>>>>>>> Stashed changes
     const response = await fetch('./api/openai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: user_prompt.toString() }),
+      body: JSON.stringify({ prompt: user_prompt.toString(), mem: history }),
     });
-    // of type {response: "..."}
-    const data = await response.json();
-    console.log(data);
+    // of return type - {response: {role:"", content:""}}
+    const res = await response.json();
+    history.push(res.response);
+    console.log(history);
+    console.log(res);
   }
 
   // auth  control

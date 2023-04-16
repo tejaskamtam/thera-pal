@@ -9,20 +9,22 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-  const { prompt } = req.body;
+  const { prompt, mem } = req.body;
+  console.log(prompt);
   const completion = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [
       {
         role: 'system',
         content:
-          'You are a therapist playing the role of my mental health aid.',
+          'You are a therapist playing the role of my mental health professional.',
       },
+      ...mem,
       { role: 'user', content: prompt },
     ],
   });
 
   res
     .status(200)
-    .json({ response: completion.data.choices[0].message.content });
+    .json({ response: completion.data.choices[0].message });
 }

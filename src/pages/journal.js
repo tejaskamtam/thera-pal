@@ -30,7 +30,7 @@ export default function Home() {
     //     setUserData(data);
     //   });
     // }
-  }, [auth]);
+  }, []);
 
   const [userData, setUserData] = useState(null);
   console.log(userData);

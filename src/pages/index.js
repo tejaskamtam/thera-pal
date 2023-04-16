@@ -12,22 +12,24 @@ import { getFirestore, getDoc, doc, setDoc } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import Link from 'next/link.js';
 
-  const db = getFirestore();
+const db = getFirestore();
+const fire_auth = getAuth(app);
+let history = [];
 
 export default function Home() {
-  const fire_auth = getAuth(app);
-
   const [auth, setAuth] = useState(null);
 
   onAuthStateChanged(fire_auth, (data) => {
-    console.log(data);
-    setAuth(data);
+    if (auth != data) {
+      setAuth(data);
+    }
   });
 
   const [prompts, setPrompts] = useState();
   useEffect(() => {
-    if (auth) {
-      const user_uid = auth.uid;
+    if (auth && fire_auth.currentUser) {
+      const user_uid = fire_auth.currentUser.uid;
+      console.log(fire_auth);
       getDoc(doc(db, 'users', user_uid)).then((data) => {
         setPrompts(data.data().prompts);
       });
@@ -37,14 +39,13 @@ export default function Home() {
   console.log(prompts);
 
   // chat with AI
-  let history =[];
   async function onSubmit() {
     const user_prompt = document.getElementById('user-input').value;
     console.log(user_prompt);
 
-    // setPrompts(...prompts, { role: 'user', content: user_prompt });
-
-    // setDoc(doc(db, 'users', fire_auth.user.uid), prompts);
+    console.log(auth.uid);
+    history = [...prompts ];
+    history.push({ role: 'user', content: user_prompt });
 
     const response = await fetch('./api/openai', {
       method: 'POST',
@@ -56,8 +57,11 @@ export default function Home() {
     // of return type - {response: {role:"", content:""}}
     const res = await response.json();
     history.push(res.response);
-    console.log(...history);
-    console.log(res);
+
+    setPrompts([...history]);
+    setDoc(doc(db, 'users', auth.uid), { prompts: history }, { merge: true });
+
+    console.log(prompts);
   }
 
   // auth  control
@@ -106,9 +110,9 @@ export default function Home() {
                 padding: 1,
               }}
             >
-              <Card>text</Card>
-              <Card>text</Card>
-              <Card>text</Card>
+              {/* {prompts.map((prompt) => {
+                  return <Card>{prompt.content}<Card/>
+              })} */}
               <Box sx={{ width: '100%' }}>
                 <TextField
                   id="user-input"

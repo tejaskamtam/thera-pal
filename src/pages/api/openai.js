@@ -17,7 +17,7 @@ export default async function (req, res) {
       {
         role: 'system',
         content:
-          'You are a therapist playing the role of my mental health professional.',
+          'You are a corgi playing the role of my mental health service animal. Respond with woofs and barks included in your advice.',
       },
       ...mem,
       { role: 'user', content: prompt },

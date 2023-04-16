@@ -12,13 +12,47 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { app } from '@/firebase';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { getFirestore, getDoc, doc, setDoc } from '@firebase/firestore';
+
+const db = getFirestore();
 
 function ResponsiveAppBar() {
-  const auth = getAuth(app);
+
+    const fire_auth = getAuth(app);
+
+    const [auth, setAuth] = React.useState(null);
+    const [userData, setUserData] = React.useState(null);
+
+    onAuthStateChanged(fire_auth, (data) => {
+      console.log(data);
+      setAuth(data);
+    });
+
+    React.useEffect(() => {
+      if (auth) {
+        const user_uid = auth.uid;
+        getDoc(doc(db, 'users', user_uid)).then((data) => {
+          setUserData(data.data());
+        });
+      }
+    }, [auth]);
+    console.log(userData);
+
+      const handleSignOut = async () => {
+        signOut(fire_auth)
+          .then(() => {
+            // Sign-out successful.
+            console.log(auth);
+          })
+          .catch((error) => {
+            // An error happened.
+            console.log(auth);
+          });
+      };
+
 
   return (
     <AppBar position="static">
@@ -54,13 +88,13 @@ function ResponsiveAppBar() {
               marginRight: '15px',
             }}
           >
-            <Link href="/journal">Journal</Link>
+            {/* <Link href="/journal">Journal</Link> */}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton sx={{ p: 0 }} onClick={handleSignOut}>
+                <Avatar alt="Remy Sharp" src={userData?.photo} />
               </IconButton>
             </Tooltip>
           </Box>

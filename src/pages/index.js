@@ -44,7 +44,7 @@ export default function Home() {
     console.log(user_prompt);
 
     console.log(auth.uid);
-    history = [...prompts ];
+    history = [...prompts];
     history.push({ role: 'user', content: user_prompt });
 
     const response = await fetch('./api/openai', {
@@ -74,14 +74,15 @@ export default function Home() {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
 
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexGrow: 1,
     },
-    
+
     logo: {
-      height: '50vh',
-      width: '40vw',
+      height: '400px',
+      width: '400px',
       backgroundImage: `url(${'corgi.gif'})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
@@ -104,15 +105,50 @@ export default function Home() {
               sx={{
                 backgroundColor: 'white',
                 height: '90%',
+                maxHeight: '90vh',
                 display: 'flex',
                 justifyContent: 'end',
                 flexDirection: 'column',
                 padding: 1,
+                width: '800px',
               }}
             >
-              {/* {prompts.map((prompt) => {
-                  return <Card>{prompt.content}<Card/>
-              })} */}
+              <Box
+                sx={{
+                  overflowY: 'scroll',
+                }}
+              >
+                {prompts?.map((prompt) => {
+                  if (prompt.role == 'user')
+                    return (
+                      <div styles={{display: 'flex', flex: "end"}}>
+                        <Card
+                          sx={{
+                            textAlign: 'right',
+                            background: '#4287f5',
+                            color: 'white',
+                            padding: 1,
+                            marginBottom: 1,
+                          }}
+                        >
+                          <div>{prompt.content}</div>
+                        </Card>
+                      </div>
+                    );
+                  return (
+                    <Card
+                      sx={{
+                        padding: 1,
+                        background: '#d0ddf2',
+                        marginBottom: 2,
+                      }}
+                    >
+                      {prompt.content}
+                    </Card>
+                  );
+                })}
+              </Box>
+
               <Box sx={{ width: '100%' }}>
                 <TextField
                   id="user-input"

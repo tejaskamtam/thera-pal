@@ -6,19 +6,20 @@ import { OpenAI } from './api/openai.js';
 import { getAuth } from 'firebase/auth';
 import { app } from '@/firebase.js';
 import ResponsiveAppBar from '@/components/NavBar.js';
-import { Box } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { useRouter } from 'next/router.js';
 
 export default function Home() {
   // chat with AI
-  async function onSubmit(event) {
-    event.preventDefault();
-    const response = await fetch('api/openai', {
+  async function onSubmit() {
+    const user_prompt = document.getElementById('user-input').value;
+    console.log(user_prompt);
+    const response = await fetch('./api/openai', {
       method: 'POST',
       headers: {
-        'Content-Type': 'applications/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: event.target.prompt.value }),
+      body: JSON.stringify({ prompt: user_prompt.toString()}),
     });
     // of type {"completion": "..."}
     const data = await response.json();
@@ -53,7 +54,14 @@ export default function Home() {
         <ResponsiveAppBar />
         <Box sx={styles.container}>
           {auth.currentUser ? (
-            <div>You're Signed In!</div>
+            <div>
+              <TextField
+                id="user-input"
+                label="Standard"
+                variant="standard"
+              />
+              <Button onClick={onSubmit}>Submit</Button>
+            </div>
           ) : (
             <div>Please Sign up!</div>
           )}

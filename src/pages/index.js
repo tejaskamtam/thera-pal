@@ -7,10 +7,24 @@ import { getAuth } from 'firebase/auth';
 import { app } from '@/firebase.js';
 import NavBar from '@/components/NavBar.js';
 import ResponsiveAppBar from '@/components/NavBar.js';
+import { Box } from '@mui/material';
+import { useRouter } from 'next/router.js';
 
 export default function Home() {
   const auth = getAuth(app);
   console.log(auth);
+  const router = useRouter();
+
+  const styles = {
+    container: {
+      height: '100vh',
+      backgroundImage: `url(${'background.jpeg'})`,
+      backgroundSize: '100vw',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+    },
+  };
+
   return (
     <>
       <Head>
@@ -21,12 +35,13 @@ export default function Home() {
       </Head>
       <main>
         <ResponsiveAppBar />
-
-        {auth.currentUser ? (
-          <div>You're Signed In!</div>
-        ) : (
-          <div>Please Sign up!</div>
-        )}
+        <Box sx={styles.container}>
+          {auth.currentUser ? (
+            <div>You're Signed In!</div>
+          ) : (
+            <div>Please Sign up!</div>
+          )}
+        </Box>
       </main>
     </>
   );

@@ -134,7 +134,7 @@ export default function Home() {
                 flexGrow: 1,
               }}
             >
-              <Button>
+              <Button variant = "contained" color = "success">
                 <Link href="/login">Login with Google</Link>
               </Button>
             </Box>

@@ -88,6 +88,14 @@ export default function Home() {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
     },
+
+    chat: {
+      height: '50vh',
+      width: '50vw',
+      backgroundImage: `url(${'chat.png'})`,
+      backgroundSIze: 'cover',
+      backgroundRepeat: 'no-repeat'
+    }
   };
 
   return (
@@ -171,11 +179,14 @@ export default function Home() {
                 flexGrow: 1,
               }}
             >
-              <Button variant = "contained" color = "success" startIcon={<LoginIcon />}>
+              <Box sx={styles.chat}>
+              <Button variant = "contained" color = "success" startIcon={<LoginIcon />} sx = {{mt : 28, ml: 19, padding : 3}}>
                 <Link href="/login">Login with Google</Link>
               </Button>
+              </Box>
             </Box>
           )}
+          
           <Box sx={styles.logo}></Box>
           {/* <img src="/Users/kelly/Desktop/hackathon/thera-pal/public/logo.png"></img> */}
         </Box>

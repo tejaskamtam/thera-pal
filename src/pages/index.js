@@ -69,10 +69,18 @@ export default function Home() {
       backgroundSize: '100vw',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexGrow: 1,
+
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    
+    logo: {
+      height: '50vh',
+      width: '40vw',
+      backgroundImage: `url(${'corgi.gif'})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
     },
   };
 
@@ -127,6 +135,8 @@ export default function Home() {
               </Button>
             </Box>
           )}
+          <Box sx={styles.logo}></Box>
+          {/* <img src="/Users/kelly/Desktop/hackathon/thera-pal/public/logo.png"></img> */}
         </Box>
       </main>
     </>

@@ -3,23 +3,54 @@ import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import Image from 'next/image';
 import { OpenAI } from './api/openai.js';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from '@/firebase.js';
 import ResponsiveAppBar from '@/components/NavBar.js';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, Card, Link, TextField } from '@mui/material';
 import { useRouter } from 'next/router.js';
+import { useEffect, useState } from 'react';
+import { getFirestore, getDoc, doc, setDoc } from '@firebase/firestore';
+import { SetMeal } from '@mui/icons-material';
+
 
 export default function Home() {
+  const fire_auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const [auth, setAuth] = useState(null);
+
+  onAuthStateChanged(fire_auth, (data) => {
+    console.log(data);
+    setAuth(data);
+  });
+
+  const [prompts, setPrompts] = useState();
+  useEffect(() => {
+    if (auth) {
+      const user_uid = auth.uid;
+      getDoc(doc(db, 'users', user_uid)).then((data) => {
+        setPrompts(data.data().prompts);
+      });
+    }
+  }, [auth]);
+
+  console.log(prompts)
+
   // chat with AI
   async function onSubmit() {
     const user_prompt = document.getElementById('user-input').value;
     console.log(user_prompt);
+
+    setPrompts(...prompts, { role: 'user', content: user_prompt });
+
+    setDoc(doc(db, 'users', fire_auth.user.uid), prompts);
+
     const response = await fetch('./api/openai', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: user_prompt.toString()}),
+      body: JSON.stringify({ prompt: user_prompt.toString() }),
     });
     // of type {"completion": "..."}
     const data = await response.json();
@@ -28,17 +59,18 @@ export default function Home() {
   }
 
   // auth  control
-  const auth = getAuth(app);
-  console.log(auth);
   const router = useRouter();
 
   const styles = {
     container: {
-      height: '100vh',
       backgroundImage: `url(${'background.jpeg'})`,
       backgroundSize: '100vw',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexGrow: 1,
     },
   };
 
@@ -53,17 +85,43 @@ export default function Home() {
       <main>
         <ResponsiveAppBar />
         <Box sx={styles.container}>
-          {auth.currentUser ? (
-            <div>
-              <TextField
-                id="user-input"
-                label="Standard"
-                variant="standard"
-              />
-              <Button onClick={onSubmit}>Submit</Button>
-            </div>
+          {auth ? (
+            <Card
+              sx={{
+                backgroundColor: 'white',
+                height: '90%',
+                display: 'flex',
+                justifyContent: 'end',
+                flexDirection: 'column',
+                padding: 1,
+              }}
+            >
+              <Box>text</Box>
+              <Box>text</Box>
+              <Box>text</Box>
+              <Box sx={{ width: '100%' }}>
+                <TextField
+                  id="user-input"
+                  label="Say Something UwU"
+                  variant="outlined"
+                  sx={{margin: 1}}
+                />
+                <Button sx={{height: '100%'}} onClick={onSubmit}>Submit</Button>
+              </Box>
+            </Card>
           ) : (
-            <div>Please Sign up!</div>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexGrow: 1,
+              }}
+            >
+              <Button>
+                <Link href="/login">Login with Google</Link>
+              </Button>
+            </Box>
           )}
         </Box>
       </main>
